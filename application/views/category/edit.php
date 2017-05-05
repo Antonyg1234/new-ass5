@@ -53,7 +53,7 @@
     <!-- Content Section Start-->
     <div class="section content_section">
         <div class="container">
-            <?php echo form_open('category/category_edit'); ?>
+            <?php echo form_open('category/edit/'.$id); ?>
             <div class="filable_form_container">
 
                 <div class="form_container_block">
@@ -61,23 +61,22 @@
                     <ul>
                         <li class="fileds">
                             <div class="name_fileds">
-                                <span class="success">
                                 <?php
                                 if (isset($this->session))
                                 {
                                     echo $this->session->flashdata('success');
                                 }
                                 ?>
-                                    </span>
-                                <label>Category Name<span class="required">  *<?php echo validation_errors(); ?></span></label>
-                                <input name="edit_category" type="text" value="<?php echo $name; ?>"/>
+                                </span>
+                                <label>Category Name<span class="required">  *<?php echo form_error('edit_category'); ?></span></label>
+                                <input name="edit_category" type="text" value="<?php echo $test->name;?>" />
                             </div>
                         </li>
                     </ul>
                     <div class="next_btn_block">
                         <div class="next_btn">
-                            <input type="submit" name="submit" id="submitbox" value="Submit"></input>
-                            <a href="<?php echo base_url(); ?>index.php/category/category_list" class="back-btn"><span><<</span>Back</a>
+                            <input type="submit" name="update" id="submitbox" value="Update"></input>
+                            <a href="<?php echo base_url(); ?>index.php/category" class="back-btn"><span><<</span>Back</a>
                         </div>
                     </div>
                 </div>

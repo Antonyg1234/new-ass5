@@ -64,16 +64,24 @@
                          <input type="submit" class="submit" value="submit">
                      </div>
                         </li> -->
-                        <li><a href="<?php echo base_url(); ?>/index.php/category">Create Category</a></li>
-                        <li><a href="#">Delete</a></li>
+                        <li><a href="<?php echo base_url(); ?>/index.php/category/add">Create Category</a></li>
+                        <li><a href="javascript:void(0)" id="delete_multiple">Delete</a></li>
                     </ul>
                 </div>
                 <div class="table_container_block">
                     <table width="100%">
+                         <span class="success">
+                                <?php
+                                if (isset($this->session))
+                                {
+                                    echo $this->session->flashdata('success');
+                                }
+                                ?>
+                                    </span>
                         <thead>
                         <tr>
                             <th width="10%">
-                                <input type="checkbox" class="checkbox" id="checkbox_sample18" /> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample18"></label>
+                                <input type="checkbox" class="checkbox" id="checkbox_all" /> <label class="css-label mandatory_checkbox_fildes" for="checkbox_all"></label>
                             </th>
                             <th style="width:60%">Name <!--<a href="#" class="sort_icon"><img src="images/sort.png"></a>--></th>
                             <th>Action</th>
@@ -82,19 +90,20 @@
                         <tbody>
                         <?php
                         $count=0;
-                        foreach ($h->result() as $row)
+                        foreach ($list_name->result() as $row)
                         {
                             $count=$count+1;
                         ?>
                         <tr>
                             <td>
-                                <input type="checkbox" class="checkbox" id="checkbox_sample<?php echo $count ?>" /> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample<?php echo $count ?>"></label>
+                                <input type="checkbox" class="checkbox inner_checkbox" id="checkbox_sample<?php echo $count ?>" value="<?php echo $row->id; ?>"/>
+                                <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample<?php echo $count ?>"></label>
                             </td>
                             <td><?php echo $row->name;?></td>
                             <td>
                                 <div class="buttons">
                                     <a class="btn btn_edit" onclick="deleteFunction(<?php echo $row->id ?>)">Delete</a>
-                                    <a class="btn btn_delete" href="<?php echo base_url(); ?>index.php/category/category_edit?id=<?php echo $row->id; ?>&name=<?php echo $row->name; ?>">Edit</a>
+                                    <a class="btn btn_delete" href="<?php echo base_url(); ?>index.php/category/edit/<?php echo $row->id; ?>">Edit</a>
                                 </div>
                             </td>
                         </tr>
@@ -107,11 +116,11 @@
                 
                 <div class="pagination_listing">
                     <ul>
-                        <li><a href="<?php echo base_url(); ?>index.php/category/category_list?page=1">first</a></li>
+                        <li><a href="<?php echo base_url(); ?>index.php/category?page=1">first</a></li>
                         <?php   for ($i=1; $i<=$total_pages; $i++) {   ?>
-                            <li><a href="<?php echo base_url(); ?>index.php/category/category_list?page=<?php echo $i;?>"><?php echo $i;?></a></li>
+                            <li><a href="<?php echo base_url(); ?>index.php/category?page=<?php echo $i;?>"><?php echo $i;?></a></li>
                         <?php   };  ?>
-                        <li><a href="<?php echo base_url(); ?>index.php/category/category_list?page=<?php echo$total_pages;?>">last</a></li>
+                        <li><a href="<?php echo base_url(); ?>index.php/category?page=<?php echo$total_pages;?>">last</a></li>
                         
                     </ul>
                 </div>
@@ -158,7 +167,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script>
 function deleteFunction(id) {
-if(confirm("Confirm delete")) document.location = '<?php echo base_url(); ?>index.php/category/category_delete?id='+id;
+if(confirm("Confirm delete")) document.location = '<?php echo base_url(); ?>index.php/category/delete?id='+id;
 }
 </script>
 
@@ -174,4 +183,35 @@ if(confirm("Confirm delete")) document.location = '<?php echo base_url(); ?>inde
             })
         });
     });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    
+    $("#checkbox_all").click(function () {
+        $('.checkbox').attr('checked', this.checked);
+    });
+
+    // if all checkbox are selected, check the selectall checkbox
+    // and viceversa
+    $(".checkbox").click(function(){
+
+        if($(".checkbox").length == $(".checkbox:checked").length) {
+            $("#checkbox_all").attr("checked", "checked");
+        } else {
+            $("#checkbox_all").removeAttr("checked");
+        }
+
+    });
+
+
+    $("#delete_multiple").on("click",function(){
+    var category_id = [];
+    $(".inner_checkbox:checked").each(function(){
+    category_id.push($(this).val());
+    });
+    console.log(category_id);
+        if(confirm("Confirm delete")) document.location = '<?php echo base_url(); ?>index.php/category/bulk_Delete?id='+category_id;
+});
+});
 </script>

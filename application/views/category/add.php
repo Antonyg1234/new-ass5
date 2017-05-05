@@ -53,7 +53,7 @@
     <!-- Content Section Start-->
     <div class="section content_section">
         <div class="container">
-            <?php echo form_open('Category'); ?>
+            <?php echo form_open('Category/add'); ?>
             <div class="filable_form_container">
 
                 <div class="form_container_block">
@@ -77,7 +77,7 @@
                     <div class="next_btn_block">
                         <div class="next_btn">
                             <input type="submit" name="submit" id="submitbox" value="Submit"></input>
-                            <a href="<?php echo base_url(); ?>index.php/category/category_list" class="back-btn"><span><<</span>Back</a>
+                            <a href="<?php echo base_url(); ?>index.php/category" class="back-btn"><span><<</span>Back</a>
                         </div>
                     </div>
                 </div>
